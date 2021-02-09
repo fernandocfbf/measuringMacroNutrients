@@ -437,6 +437,35 @@ def predict(X, y, parameters):
         
     return p
 
+def false_and_positives_analysis(predict, y_hat):
+    false_positives = 0
+    false_negatives = 0
+    true_positives = 0
+    true_negatives = 0
+    
+    for i in range(len(predict[0])):
+        
+        predicted_value = str(float(predict[0][i]))
+        true_value = str(float(y_hat[0][i]))
+                
+        if predicted_value == "0.0" and true_value == "0.0":
+            true_negatives += 1
+        elif predicted_value == "1.0" and true_value == "1.0":
+            true_positives += 1
+        elif predicted_value == "0.0" and true_value == "1.0":
+            false_positives += 1
+        elif predicted_value == "1.0" and true_value == "0.0":
+            false_negatives += 1
+            
+    print("The number of FALSE POSITIVES were: ", false_positives)
+    print("The number of FALSE NEGATIVES were: ", false_negatives)
+    print("The number of TRUE POSITIVES were: ", true_positives)
+    print("The number of TRUE NEGATIVES were: ", true_negatives)
+    
+    return
+        
+        
+
 def print_mislabeled_images(classes, X, y, p):
     """
     Plots images where predictions and truth were different.
