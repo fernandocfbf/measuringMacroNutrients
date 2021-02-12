@@ -87,6 +87,8 @@ def load_data():
     
     data = [] #variável que armarzenará todos as imagens de pizza
     
+    np.random.seed(1)    
+    
     with os.scandir(parent_path+'/data/pizza/') as entries:
         for entry in entries:
             diretorio = parent_path+'/data/pizza/' + entry.name #pega o diretório das fotos
@@ -95,7 +97,7 @@ def load_data():
             matriz = np.array(img_resized) #cria um array com cada imagem (64 x 64 x 3) 
             data.append([1,matriz]) #adiciona a matriz na lista "data"
 
-    pizza_imgs = np.array(data) #cria uma matriz com todos os train_examples
+    pizza_imgs = np.array(data, dtype=object) #cria uma matriz com todos os train_examples
     
     non_data = [] #variável que armarzenará todos as imagens de não pizza
 
@@ -107,7 +109,7 @@ def load_data():
             matriz = np.array(img_resized) #cria um array com cada imagem (64 x 64 x 3) 
             non_data.append([0,matriz]) #adiciona a matriz na lista "data"
 
-    non_pizza = np.array(non_data)
+    non_pizza = np.array(non_data, dtype=object)
     
     all_images = []
 
@@ -400,10 +402,9 @@ def predict(X, y, parameters):
         img = "non-pizza"
         
     #print results
-    print("Accuracy: "  + str(np.sum((p == y)/m)))
-    print ("y = " + str(p[0][0]) + ", your L-layer model predicts a \"" + img + "\" picture.")
+    accuracy = str(np.sum((p == y)/m))
         
-    return p
+    return p, accuracy
 
 def false_and_positives_analysis(predict, y_hat):
     false_positives = 0
