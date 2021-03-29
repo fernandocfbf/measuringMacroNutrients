@@ -6,6 +6,7 @@ import matplotlib.image as mpimg
 from skimage.transform import resize
 import skimage.measure
 import cv2
+from tqdm import tqdm
 
 def sigmoid(Z):
     """
@@ -92,7 +93,7 @@ def load_data():
     np.random.seed(1)    
     
     with os.scandir(parent_path+'/data/pizza/') as entries:
-        for entry in entries:
+        for entry in tqdm(entries):
             diretorio = parent_path + '/data/pizza/' + entry.name #pega o diretório das fotos
             if diretorio[-4:-1] == ".jp":
                 imagem = mpimg.imread(diretorio) #le a imagem atual
@@ -105,7 +106,7 @@ def load_data():
     non_data = [] #variável que armarzenará todos as imagens de não pizza
 
     with os.scandir(parent_path+'/data/non-pizza/') as entries:
-        for entry in entries:
+        for entry in tqdm(entries):
             diretorio = parent_path+'/data/non-pizza/' + entry.name #pega o diretório das fotos
             imagem = mpimg.imread(diretorio) #le a imagem atual
             img_resized = resize(imagem, (64,64)) #redimensiona a imagem para ser 64 x 64
