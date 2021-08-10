@@ -35,11 +35,10 @@ def load_data():
     data = [] #variável que armarzenará todos as imagens de pizza
     labels = [] #variável que armarzenará todos as imagens de não pizza
     
-    data, labels = le_imagens(parent_path+'/data/non_images/', data, labels, [1,0,0,0,0,0,0])
-    data, labels = le_imagens(parent_path+'/data/pizza/', data, labels, [0,1,0,0,0,0,0])
-    data, labels = le_imagens(parent_path+'/data/hot_dog/', data, labels, [0,0,1,0,0,0,0])
-    data, labels = le_imagens(parent_path+'/data/rice/', data, labels, [0,0,0,1,0,0,0])
-    data, labels = le_imagens(parent_path+'/data/sushi/', data, labels, [0,0,0,0,1,0,0])
-    data, labels = le_imagens(parent_path+'/data/donuts/', data, labels, [0,0,0,0,0,1,0])
-    data, labels = le_imagens(parent_path+'/data/french_fries/', data, labels, [0,0,0,0,0,0,1])
+    data, labels = le_imagens(parent_path+'/data/pizza/', data, labels, [1,0,0,0,0,0])
+    data, labels = le_imagens(parent_path+'/data/hot_dog/', data, labels, [0,1,0,0,0,0])
+    data, labels = le_imagens(parent_path+'/data/rice/', data, labels, [0,0,1,0,0,0])
+    data, labels = le_imagens(parent_path+'/data/sushi/', data, labels, [0,0,0,1,0,0])
+    data, labels = le_imagens(parent_path+'/data/donuts/', data, labels, [0,0,0,0,1,0])
+    data, labels = le_imagens(parent_path+'/data/french_fries/', data, labels, [0,0,0,0,0,1])
     return np.array(data, dtype="float")/255.0, np.array(labels)

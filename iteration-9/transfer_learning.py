@@ -1,4 +1,3 @@
-from numpy.core.arrayprint import printoptions
 from numpy.core.fromnumeric import size
 from sklearn.model_selection import train_test_split
 import keras
@@ -10,12 +9,14 @@ from keras.layers import Dropout, Flatten, Dense
 from load_images_cnn import *
 from keras import optimizers
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
+import matplotlib.pyplot as plt
 import argparse
 
 # construct the argument parser and parse the arguments
 ap = argparse.ArgumentParser()
 ap.add_argument("-m", "--model", default="VGG16", help="model to be reused")
 ap.add_argument("-s", "--size", default=64, help="image size")
+ap.add_argument("-b", "--batch", default=32, help="batch size")
 args = vars(ap.parse_args())
 
 # construct the image generator for data augmentation
@@ -24,6 +25,7 @@ aug = ImageDataGenerator(rotation_range=30, width_shift_range=0.1,
                          horizontal_flip=True, fill_mode="nearest")
 
 size = int(args['size'])
+batch = int(args['batch'])
 
 x, y = load_data(size) #loads images
 
@@ -52,4 +54,17 @@ for layer in tf_model.layers[:20]:
     layer.trainable=False
 
 tf_model.compile(optimizer=optimizers.Adam(), loss='categorical_crossentropy', metrics=['acc'])
-history = tf_model.fit(x=aug.flow(X_train, y_train, batch_size=32), epochs = 30, initial_epoch = 0, validation_data = (X_test, y_test), steps_per_epoch=len(X_train) // 32)
+history = tf_model.fit(x=aug.flow(X_train, y_train, batch_size=batch), epochs = 30, initial_epoch = 0, validation_data = (X_test, y_test), steps_per_epoch=len(X_train) // batch)
+
+# evaluate the network
+print("[INFO] evaluating network...")
+N = np.arange(0, 30)
+plt.style.use("ggplot")
+plt.figure()
+plt.plot(N, history.history["loss"], label="train_loss")
+plt.plot(N, history.history["val_acc"], label="val_acc")
+plt.title("Training Loss and Accuracy")
+plt.xlabel("Epoch #")
+plt.ylabel("Loss/Accuracy")
+plt.legend()
+plt.show()
